@@ -1,0 +1,20 @@
+{
+  "name": "ngraph.todot",
+  "version": "0.1.0",
+  "description": "Save ngraph.graph to dot format",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ngraph",
+    "dot",
+    "graphviz"
+  ],
+  "author": "Andrei Kashcha",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anvaka/ngraph.todot"
+  }
+}
