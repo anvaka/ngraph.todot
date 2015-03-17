@@ -13,6 +13,16 @@ test('it saves graph', function(t) {
   t.end();
 });
 
+test('it saves graph with isolated nodes', function(t) {
+  var g = createGraph();
+  g.addLink(2, 3);
+  g.addNode(1);
+  var stored = todot(g);
+  var loaded = fromdot(stored);
+  assertGraphsEqual(loaded, g, t);
+  t.end();
+});
+
 test('it saves graphs with string ids', function(t) {
   var g = createGraph();
   g.addLink('hello wordl', '!');
