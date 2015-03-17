@@ -1,6 +1,6 @@
 {
   "name": "ngraph.todot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Save ngraph.graph to dot format",
   "main": "index.js",
   "scripts": {
