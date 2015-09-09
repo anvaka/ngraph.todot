@@ -13,6 +13,18 @@ test('it saves graph', function(t) {
   t.end();
 });
 
+test('it saves edges attributes', function(t) {
+  var g = createGraph();
+  g.addLink(1, 2, 'hello');
+  g.addLink(2, 3, {version: 42});
+
+  var stored = todot(g);
+  var loaded = fromdot(stored);
+
+  assertGraphsEqual(loaded, g, t);
+  t.end();
+});
+
 test('it saves graph with isolated nodes', function(t) {
   var g = createGraph();
   g.addLink(2, 3);

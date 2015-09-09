@@ -18,7 +18,27 @@ function todot(graph, indent) {
   function storeLink(link) {
     var fromId = dotEscape(link.fromId);
     var toId = dotEscape(link.toId);
-    buf.push(prefix + fromId + ' -> ' + toId);
+    var attribute = link.data === undefined ?
+          '' :
+          ' ' + makeDotAttribute(link.data);
+
+    buf.push(prefix + fromId + ' -> ' + toId + attribute);
+  }
+
+  function makeDotAttribute(object) {
+    // TODO: Write more tests for this
+    var objectType = typeof(object);
+    if (objectType === 'object') {
+      // TODO: handle arrays properly
+      var buf = [];
+      Object.keys(object).forEach(function(attrName) {
+        var value = JSON.stringify(object[attrName]);
+        buf.push(dotEscape(attrName) + '=' + value);
+      });
+      return '[' + buf.join(' ') + ']';
+    }
+    // else - it's primitive type:
+    return '[' + JSON.stringify(object) + ']';
   }
 
   function storeNode(node) {
