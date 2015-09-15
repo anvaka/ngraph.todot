@@ -42,7 +42,8 @@ function todot(graph, indent) {
   }
 
   function storeNode(node) {
-    var isIsolated = graph.getLinks(node.id).length === 0;
+    var links = graph.getLinks(node.id);
+    var isIsolated = !links || (links.length === 0);
     if (isIsolated) {
       // non-isolated nodes are saved by `storeLink()`;
       buf.push(prefix + dotEscape(node.id));
