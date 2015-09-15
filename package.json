@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "ngraph.fromdot": "^0.1.2",
-    "ngraph.graph": "0.0.10",
+    "ngraph.graph": "0.0.12",
     "tap": "^0.5.0"
   }
 }
