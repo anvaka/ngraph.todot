@@ -1,19 +1,14 @@
 module.exports = todot;
+module.exports.write = write;
 
-function todot(graph, indent) {
-  indent = typeof indent === 'number' ? indent : 0;
-  if (indent < 0) indent = 0;
-
-  var prefix = new Array(indent + 1).join(' ');
+function write(graph, writer) {
   // we always assume it's directed graph for now.
-  var buf = ['digraph G {'];
+  writer('digraph G {');
   // very naive algorith. Will optimize in future if required;
   graph.forEachLink(storeLink);
   graph.forEachNode(storeNode);
 
-  buf.push('}');
-
-  return buf.join('\n');
+  writer('}');
 
   function storeLink(link) {
     var fromId = dotEscape(link.fromId);
@@ -22,7 +17,7 @@ function todot(graph, indent) {
           '' :
           ' ' + makeDotAttribute(link.data);
 
-    buf.push(prefix + fromId + ' -> ' + toId + attribute);
+    writer(fromId + ' -> ' + toId + attribute);
   }
 
   function makeDotAttribute(object) {
@@ -46,9 +41,26 @@ function todot(graph, indent) {
     var isIsolated = !links || (links.length === 0);
     if (isIsolated) {
       // non-isolated nodes are saved by `storeLink()`;
-      buf.push(prefix + dotEscape(node.id));
+      writer(dotEscape(node.id));
     }
   }
+}
+
+function todot(graph, indent) {
+  indent = typeof indent === 'number' ? indent : 0;
+  if (indent < 0) indent = 0;
+
+  var prefix = new Array(indent + 1).join(' ');
+  var buf = [];
+
+  write(graph, bufferWriter);
+
+  return buf.join('\n');
+
+  function bufferWriter(str) {
+    buf.push(prefix + str);
+  }
+
 }
 
 function dotEscape(id) {

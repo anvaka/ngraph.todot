@@ -40,6 +40,39 @@ var newGraph = fromDot(dotContent);
 
 Now `newGraph` is an instance of `ngraph.graph`
 
+## Streaming
+
+By default, when you `toDot(graph)` the output is buffered into an array,
+and flushed at the end. This may not be feasible for huge graphs, since it takes
+extra memory.
+
+For this uses case `ngraph.todot` exposes a low level method `write(line)` which
+allows your code to own how actual output is stored/processed.
+
+For example:
+
+``` js
+var graph = require('ngraph.graph')();
+graph.addLink(1, 2);
+graph.addLink(2, 3);
+
+var toDot = require('ngraph.todot');
+
+toDot.write(graph, function customWriter(line) {
+  console.log(line);
+});
+
+```
+
+This will print dot file on the console without using extra memory:
+
+```
+digraph G {
+1 -> 2
+2 -> 3
+}
+```
+
 # install
 
 With [npm](https://npmjs.org) do:

@@ -44,6 +44,21 @@ test('it saves graphs with string ids', function(t) {
   t.end();
 });
 
+test('it can use custom writer', function(t) {
+  var g = createGraph();
+  g.addLink(1, 2);
+  g.addLink(2, 3);
+
+  var finalString = '';
+  var stored = todot.write(g, function (line) {
+    finalString += line + '\n';
+  });
+
+  var loaded = fromdot(finalString);
+  assertGraphsEqual(loaded, g, t);
+  t.end();
+});
+
 function assertGraphsEqual(actual, expected, t) {
   t.ok(actual && expected, 'both graphs are defined');
   t.equals(actual.getLinksCount(), expected.getLinksCount(), 'Links amount is the same');
@@ -65,3 +80,4 @@ function assertGraphsEqual(actual, expected, t) {
     t.ok(otherLink, 'Actual graph has link ' + link.id);
   }
 }
+
