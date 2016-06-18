@@ -46,7 +46,7 @@ By default, when you `toDot(graph)` the output is buffered into an array,
 and flushed at the end. This may not be feasible for huge graphs, since it takes
 extra memory.
 
-For this uses case `ngraph.todot` exposes a low level method `write(line)` which
+For this uses case `ngraph.todot` exposes a low level method `write(graph, writer)` which
 allows your code to own how actual output is stored/processed.
 
 For example:
