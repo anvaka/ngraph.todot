@@ -30,8 +30,9 @@ function write(graph, writer, options) {
       // TODO: handle arrays properly
       var buf = [];
       Object.keys(object).forEach(function(attrName) {
-        var value = JSON.stringify(object[attrName]);
-        buf.push(dotEscape(attrName) + '=' + value);
+        var value = object[attrName];
+        var isHTML = typeof value == 'string' && value[0] == '<' && value[value.length - 1] == '>';
+        buf.push(dotEscape(attrName) + '=' + (isHTML ? value : JSON.stringify(object[attrName])));
       });
       return ' [' + buf.join(' ') + ']';
     }
