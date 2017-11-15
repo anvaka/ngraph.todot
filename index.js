@@ -1,7 +1,8 @@
 module.exports = todot;
 module.exports.write = write;
 
-function write(graph, writer) {
+function write(graph, writer, options) {
+  if (!options) options = {}
   // we always assume it's directed graph for now.
   writer('digraph G {');
   // very naive algorith. Will optimize in future if required;
@@ -13,11 +14,13 @@ function write(graph, writer) {
   function storeLink(link) {
     var fromId = dotEscape(link.fromId);
     var toId = dotEscape(link.toId);
-    var attribute = link.data === undefined ?
-          '' :
-          ' ' + makeDotAttribute(link.data);
-
-    writer(fromId + ' -> ' + toId + attribute);
+    var line = fromId + ' -> ' + toId;
+    if (options.createLinkAttributes) {
+      line += makeDotAttribute(options.createLinkAttributes(link));
+    } else if (link.data !== undefined) {
+      line += makeDotAttribute(link.data);
+    }
+    writer(line);
   }
 
   function makeDotAttribute(object) {
@@ -30,30 +33,39 @@ function write(graph, writer) {
         var value = JSON.stringify(object[attrName]);
         buf.push(dotEscape(attrName) + '=' + value);
       });
-      return '[' + buf.join(' ') + ']';
+      return ' [' + buf.join(' ') + ']';
     }
     // else - it's primitive type:
-    return '[' + JSON.stringify(object) + ']';
+    return ' [' + JSON.stringify(object) + ']';
   }
 
   function storeNode(node) {
     var links = graph.getLinks(node.id);
     var isIsolated = !links || (links.length === 0);
-    if (isIsolated) {
+    if (isIsolated || options.createNodeAttributes) {
       // non-isolated nodes are saved by `storeLink()`;
-      writer(dotEscape(node.id));
+      var line = dotEscape(node.id);
+      if (options.createNodeAttributes) {
+        line += makeDotAttribute(options.createNodeAttributes(node));
+      }
+      writer(line);
     }
   }
 }
 
-function todot(graph, indent) {
-  indent = typeof indent === 'number' ? indent : 0;
+function todot(graph, options) {
+  if (!options) options = {};
+
+  var indent = typeof options.indent === 'number' ? options.indent : 0;
   if (indent < 0) indent = 0;
 
   var prefix = new Array(indent + 1).join(' ');
   var buf = [];
 
-  write(graph, bufferWriter);
+  write(graph, bufferWriter, {
+    createNodeAttributes: options.createNodeAttributes,
+    createLinkAttributes: options.createLinkAttributes
+  });
 
   return buf.join('\n');
 
@@ -70,4 +82,3 @@ function dotEscape(id) {
   id = id.replace(/\n/gm, '\\\n');
   return '"' + id + '"';
 }
-

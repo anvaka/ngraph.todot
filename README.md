@@ -14,6 +14,11 @@ graph.addLink(2, 3);
 // Now save it to dot format:
 var toDot = require('ngraph.todot');
 var dotContent = toDot(graph);
+// or
+var newGraph = fromDot(dotContent, {
+  createNodeAttributes: (node) => ({label: node.data.text}),
+  createLinkAttributes: (link) => ({label: link.data.value}),
+});
 ```
 
 This will set `dotContent` to a string with a graph, described in dot format:
