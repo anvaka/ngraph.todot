@@ -3,8 +3,10 @@ module.exports.write = write;
 
 function write(graph, writer, options) {
   if (!options) options = {}
+  var directed = options.directed !== undefined ? !!options.directed : true
+
   // we always assume it's directed graph for now.
-  writer('digraph G {');
+  writer(directed ? 'digraph G {' : 'graph G {');
   // very naive algorith. Will optimize in future if required;
   graph.forEachLink(storeLink);
   graph.forEachNode(storeNode);
@@ -14,7 +16,7 @@ function write(graph, writer, options) {
   function storeLink(link) {
     var fromId = dotEscape(link.fromId);
     var toId = dotEscape(link.toId);
-    var line = fromId + ' -> ' + toId;
+    var line = fromId + (directed ? ' -> ' : ' -- ') + toId;
     if (options.createLinkAttributes) {
       line += makeDotAttribute(options.createLinkAttributes(link));
     } else if (link.data !== undefined) {
@@ -65,7 +67,8 @@ function todot(graph, options) {
 
   write(graph, bufferWriter, {
     createNodeAttributes: options.createNodeAttributes,
-    createLinkAttributes: options.createLinkAttributes
+    createLinkAttributes: options.createLinkAttributes,
+    directed: options.directed
   });
 
   return buf.join('\n');
