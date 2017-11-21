@@ -15,9 +15,14 @@ graph.addLink(2, 3);
 var toDot = require('ngraph.todot');
 var dotContent = toDot(graph);
 // or
-var newGraph = fromDot(dotContent, {
+var dotContent = toDot(dotContent, {
   createNodeAttributes: (node) => ({label: node.data.text}),
   createLinkAttributes: (link) => ({label: link.data.value}),
+  directed: false, // Force the graph to be non-directed
+  graphAttributes: {
+    label: text,
+    ...
+  }
 });
 ```
 
