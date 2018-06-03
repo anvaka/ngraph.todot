@@ -37,7 +37,7 @@ test('it saves graph with isolated nodes', function(t) {
 
 test('it saves graphs with string ids', function(t) {
   var g = createGraph();
-  g.addLink('hello wordl', '!');
+  g.addLink('hello world', '!');
   var stored = todot(g);
   var loaded = fromdot(stored);
   assertGraphsEqual(loaded, g, t);
