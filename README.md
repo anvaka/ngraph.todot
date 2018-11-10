@@ -40,6 +40,32 @@ var newGraph = fromDot(dotContent);
 
 Now `newGraph` is an instance of `ngraph.graph`
 
+## Attributes
+
+The library will store attributes of nodes/edges, with a few limitations
+
+1. Attribute must be an object and not a primitive type
+2. Composite nested objects are JSON.stringified.
+
+``` js
+var graph = require('ngraph.graph')();
+graph.addNode(1, { name: 'ngraph' });
+graph.addLink(1, 2, { version: '42' });
+
+
+// Now save it to dot format:
+var toDot = require('ngraph.todot');
+var dotContent = toDot(graph);
+
+// you can parse it back:
+var fromDot = require('ngraph.fromdot');
+var restored = fromDot(dotContent);
+// and expect attributes to be present:
+
+restored.getNode(1).data.name === 'ngraph'
+restored.getLink(1, 2).data.version === '42'
+```
+
 ## Streaming
 
 By default, when you `toDot(graph)` the output is buffered into an array,

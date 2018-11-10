@@ -39,9 +39,10 @@ function write(graph, writer) {
   function storeNode(node) {
     var links = graph.getLinks(node.id);
     var isIsolated = !links || (links.length === 0);
-    if (isIsolated) {
+    if (isIsolated || node.data) {
       // non-isolated nodes are saved by `storeLink()`;
-      writer(dotEscape(node.id));
+      var attribute = node.data === undefined ? '' : ' ' + makeDotAttribute(node.data);
+      writer(dotEscape(node.id) + attribute);
     }
   }
 }
