@@ -1,6 +1,6 @@
 {
   "name": "ngraph.todot",
-  "version": "0.3.0",
+  "version": "3.0.0",
   "description": "Save ngraph.graph to dot format",
   "main": "index.js",
   "scripts": {
@@ -18,8 +18,8 @@
     "url": "https://github.com/anvaka/ngraph.todot"
   },
   "devDependencies": {
-    "ngraph.fromdot": "^0.3.0",
-    "ngraph.graph": "0.0.14",
+    "ngraph.fromdot": "^5.0.0",
+    "ngraph.graph": "18.0.0",
     "tap": "^12.6.1"
   }
 }
