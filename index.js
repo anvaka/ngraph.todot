@@ -68,7 +68,10 @@ function dotEscape(id) {
   if (typeof id === 'number') {
     return id;
   }
-  id = id.replace(/\n/gm, '\\\n');
+
+  id = id.replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\n/gm, '\\\n');
   return '"' + id + '"';
 }
 

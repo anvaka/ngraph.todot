@@ -92,6 +92,16 @@ test('it can use custom writer', function(t) {
   t.end();
 });
 
+test('it escapes', function(t) {
+  var g = createGraph();
+  g.addLink('A"rdo', 'B"ardo');
+
+  var stored = todot(g);
+  var loaded = fromdot(stored);
+  assertGraphsEqual(loaded, g, t);
+  t.end();
+});
+
 function assertGraphsEqual(actual, expected, t) {
   t.ok(actual && expected, 'both graphs are defined');
   t.equals(actual.getLinksCount(), expected.getLinksCount(), 'Links amount is the same');
