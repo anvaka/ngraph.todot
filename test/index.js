@@ -104,8 +104,8 @@ test('it escapes', function(t) {
 
 function assertGraphsEqual(actual, expected, t) {
   t.ok(actual && expected, 'both graphs are defined');
-  t.equals(actual.getLinksCount(), expected.getLinksCount(), 'Links amount is the same');
-  t.equals(actual.getNodesCount(), expected.getNodesCount(), 'Nodes amount is the same');
+  t.equal(actual.getLinksCount(), expected.getLinksCount(), 'Links amount is the same');
+  t.equal(actual.getNodesCount(), expected.getNodesCount(), 'Nodes amount is the same');
 
   expected.forEachNode(verifyNode);
   expected.forEachLink(verifyLink);

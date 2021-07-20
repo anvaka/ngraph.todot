@@ -1,4 +1,4 @@
-# ngraph.todot [![Build Status](https://travis-ci.org/anvaka/ngraph.todot.svg)](https://travis-ci.org/anvaka/ngraph.todot)
+# ngraph.todot [![build status](https://github.com/anvaka/ngraph.todot/actions/workflows/tests.yaml/badge.svg)](https://github.com/anvaka/ngraph.todot/actions/workflows/tests.yaml)
 
 Save [ngraph.graph](https://github.com/anvaka/ngraph.graph) to [dot](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) format.
 
