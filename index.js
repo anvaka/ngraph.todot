@@ -38,7 +38,7 @@ function write(graph, writer) {
 
   function storeNode(node) {
     var links = graph.getLinks(node.id);
-    var isIsolated = !links || (links.length === 0);
+    var isIsolated = !links || (links.length === 0) || (links.size === 0);
     if (isIsolated || node.data) {
       // non-isolated nodes are saved by `storeLink()`;
       var attribute = node.data === undefined ? '' : ' ' + makeDotAttribute(node.data);
