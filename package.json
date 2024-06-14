@@ -4,7 +4,7 @@
   "description": "Save ngraph.graph to dot format",
   "main": "index.js",
   "scripts": {
-    "test": "tap --branches=80 --lines=80 --statements=80 --functions=80 test/*.js"
+    "test": "tap -- --branches=80 --lines=80 --statements=80 --functions=80 test/*.js"
   },
   "keywords": [
     "ngraph",
@@ -20,6 +20,6 @@
   "devDependencies": {
     "ngraph.fromdot": "^7.0.0",
     "ngraph.graph": "20.0.0",
-    "tap": "^16.3.0"
+    "tap": "^19.2.0"
   }
 }
