@@ -69,6 +69,17 @@ test('it saves multiple attributes', function(t) {
   t.end();
 });
 
+test('it saves node\'s array attributes', function(t) {
+  var g = createGraph();
+  g.addNode(1, {name: 'foo', position: [1, 2]});
+
+  var stored = todot(g);
+  var loaded = fromdot(stored);
+
+  assertGraphsEqual(loaded, g, t);
+  t.end();
+});
+
 /**
  *  Note: these test will fail -- need to see if I want to
  * implement this feature or not.
@@ -83,16 +94,6 @@ test('it saves primitive attributes', function(t) {
   t.end();
 });
 
-test('it saves node\'s array attributes', function(t) {
-  var g = createGraph();
-  g.addNode(1, {name: 'foo', position: [1, 2]});
-
-  var stored = todot(g);
-  var loaded = fromdot(stored);
-
-  assertGraphsEqual(loaded, g, t);
-  t.end();
-});
 */
 
 test('it saves graph with isolated nodes', function(t) {

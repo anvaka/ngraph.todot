@@ -14,26 +14,27 @@ function write(graph, writer) {
     var fromId = dotEscape(link.fromId);
     var toId = dotEscape(link.toId);
     var attribute = link.data === undefined ?
-          '' :
-          ' ' + makeDotAttribute(link.data);
+      '' :
+      ' ' + makeDotAttribute(link.data);
 
     writer(fromId + ' -> ' + toId + attribute);
   }
 
   function makeDotAttribute(object) {
-    // TODO: Write more tests for this
-    var objectType = typeof(object);
-    if (objectType === 'object') {
-      // TODO: handle arrays properly
-      var buf = [];
-      Object.keys(object).forEach(function(attrName) {
-        var value = JSON.stringify(object[attrName]);
-        buf.push(dotEscape(attrName) + '=' + value);
-      });
-      return '[' + buf.join(' ') + ']';
+    if (typeof object !== 'object' || object === null) {
+      throw new Error("Attributes must be an object.");
     }
-    // else - it's primitive type:
-    return '[' + JSON.stringify(object) + ']';
+
+    var buf = [];
+    Object.keys(object).forEach(function (attrName) {
+      var value = object[attrName];
+      var serializedValue = Array.isArray(value)
+        // It's not perfect, but it's good enough for now.
+        ? `\"[${value.map(v => JSON.stringify(v)).join(', ')}]\"`
+        : JSON.stringify(value);
+      buf.push(dotEscape(attrName) + '=' + serializedValue);
+    });
+    return '[' + buf.join(', ') + ']';
   }
 
   function storeNode(node) {

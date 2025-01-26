@@ -18,7 +18,7 @@
     "url": "https://github.com/anvaka/ngraph.todot"
   },
   "devDependencies": {
-    "ngraph.fromdot": "^7.0.0",
+    "ngraph.fromdot": "^7.1.0",
     "ngraph.graph": "20.0.0",
     "tap": "^19.2.0"
   }
