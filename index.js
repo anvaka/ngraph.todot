@@ -4,7 +4,7 @@ module.exports.write = write;
 function write(graph, writer) {
   // we always assume it's directed graph for now.
   writer('digraph G {');
-  // very naive algorith. Will optimize in future if required;
+  // very naive algorithm. Will optimize in future if required;
   graph.forEachLink(storeLink);
   graph.forEachNode(storeNode);
 
@@ -32,7 +32,10 @@ function write(graph, writer) {
         // It's not perfect, but it's good enough for now.
         ? `\"[${value.map(v => JSON.stringify(v)).join(', ')}]\"`
         : JSON.stringify(value);
-      buf.push(dotEscape(attrName) + '=' + serializedValue);
+      
+      // Only escape attribute names when necessary
+      var escapedAttrName = isValidDotId(attrName) ? attrName : dotEscape(attrName);
+      buf.push(escapedAttrName + '=' + serializedValue);
     });
     return '[' + buf.join(', ') + ']';
   }
@@ -46,6 +49,13 @@ function write(graph, writer) {
       writer(dotEscape(node.id) + attribute);
     }
   }
+}
+
+// Checks if a string is a valid DOT ID that doesn't need quoting
+// According to DOT spec, valid IDs are alphanumeric strings (including underscores)
+// that aren't purely numeric and don't start with a digit
+function isValidDotId(id) {
+  return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(id);
 }
 
 function todot(graph, indent) {

@@ -140,6 +140,32 @@ test('it escapes', function(t) {
   t.end();
 });
 
+test('it properly escapes attribute names', function(t) {
+  var g = createGraph();
+  // Add node with attributes that need different escaping rules
+  g.addNode(1, {
+    valid_id: 'should not be quoted',
+    'invalid-id': 'should be quoted',
+    '123numeric': 'should be quoted',
+    '_valid': 'should not be quoted',
+    'valid_with_numbers123': 'should not be quoted'
+  });
+  
+  var stored = todot(g);
+  
+  // Check that valid IDs aren't quoted and invalid ones are
+  t.ok(stored.includes('valid_id='), 'Valid ID should not be quoted');
+  t.ok(stored.includes('"invalid-id"='), 'Invalid ID with hyphen should be quoted');
+  t.ok(stored.includes('"123numeric"='), 'ID starting with number should be quoted');
+  t.ok(stored.includes('_valid='), 'ID starting with underscore should not be quoted');
+  t.ok(stored.includes('valid_with_numbers123='), 'ID with numbers should not be quoted');
+  
+  // Also verify the graph can be loaded back
+  var loaded = fromdot(stored);
+  assertGraphsEqual(loaded, g, t);
+  t.end();
+});
+
 function assertGraphsEqual(actual, expected, t) {
   t.ok(actual && expected, 'both graphs are defined');
   t.equal(actual.getLinksCount(), expected.getLinksCount(), 'Links amount is the same');
